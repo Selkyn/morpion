@@ -21,13 +21,13 @@ function generateBtn() {
         morpionContainer.appendChild(btnMorpion);
         btnMorpion.addEventListener("click", function(){
             writeSign(btnMorpion, idBtnMorpion)
-            compareArray1(conditionWin, playerOne)
-            compareArray2(conditionWin, playerTwo)
+            compareArray1(conditionWin, playerOne, playerTwo)
+            // compareArray2(conditionWin, playerTwo)
         })
     }
 }
-
 generateBtn();
+
 function writeSign(btnMorpion, idBtnMorpion) {
     if (switchSign === false) {
         btnMorpion.innerText = "X";
@@ -44,29 +44,44 @@ function writeSign(btnMorpion, idBtnMorpion) {
 }
 console.log(playerOne)
 
-function compareArray1(array1, array2) {
+function compareArray1(array1, array2, array3) {
     for (let i = 0; i < array1.length; i++) {
-        arrayOfarray = array1[i];
+        let arrayOfarray = array1[i];
         if (arrayOfarray.every(element => array2.includes(element))) {
-            alert("Joueur 1 gagne");
+            setTimeout(() => {
+                alert("Joueur 1 gagne");
+            }, 300);
             scoringPlayerOne ++;
             scorePlayerOne.innerText = scoringPlayerOne
-        };
-    }
-}
 
-function compareArray2(array1, array2) {
-    for (let i = 0; i < array1.length; i++) {
-        arrayOfarray = array1[i];
-        if (arrayOfarray.every(element => array2.includes(element))) {
-            alert("Joueur 2 gagne");
+        }else if (arrayOfarray.every(element => array3.includes(element))){
+            setTimeout(() => {
+                alert("Joueur 2 gagne");
+            }, 300);
             scoringPlayerTwo ++;
             scorePlayerTwo.innerText = scoringPlayerTwo;
-        };
+        }
     }
 }
 
+// function compareArray2(array1, array2) {
+//     for (let i = 0; i < array1.length; i++) {
+//         arrayOfarray = array1[i];
+//         if (arrayOfarray.every(element => array2.includes(element))) {
+//             setTimeout(() => {
+//                 alert("Joueur 2 gagne");
+//             }, 300);
+//             scoringPlayerTwo ++;
+//             scorePlayerTwo.innerText = scoringPlayerTwo;
+//         };
+//     }
+// }
 
+function continueGame() {
+    playerOne = [];
+    playerTwo = [];
+    generateBtn();
+}
 
 
 // function win(btnMorpion) {
