@@ -2,7 +2,8 @@ const morpionContainer = document.getElementById("morpion-container");
 const scorePlayerOne = document.getElementById("score-player-one");
 const scorePlayerTwo = document.getElementById("score-player-two");
 let switchSign = false;
-let testArray = [];
+let winBlock = document.getElementById("win");
+let equalityArray = [];
 let playerOne = [];
 let playerTwo = [];
 let scoringPlayerOne = 0;
@@ -10,59 +11,92 @@ let scoringPlayerTwo = 0;
 const conditionWin = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9], [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]];
 
 function generateBtn() {
+    
     for(let i = 1; i < 10; i++) {
         const btnMorpion = document.createElement("button");
         btnMorpion.classList = "btn-morpion";
-        const idBtnMorpion = i;
-        testArray.push(idBtnMorpion)
-        btnMorpion.id = idBtnMorpion;
-        console.log(testArray)
-        // console.log(btnMorpion)
+        const numberBtnMorpion = i; // je profite de ma boucle pour generer des nombres de 1 à 9 pour plus tard
+        equalityArray.push(btnMorpion)
+        // btnMorpion.id = numberBtnMorpion;
+        // console.log(equalityArray)
+        console.log(numberBtnMorpion)
         morpionContainer.appendChild(btnMorpion);
         btnMorpion.addEventListener("click", function(){
-            writeSign(btnMorpion, idBtnMorpion)
+            writeSign(btnMorpion, numberBtnMorpion)
             compareArray1(conditionWin, playerOne, playerTwo)
-            // compareArray2(conditionWin, playerTwo)
         })
     }
 }
-generateBtn();
 
-function writeSign(btnMorpion, idBtnMorpion) {
+
+function writeSign(btnMorpion, numberBtnMorpion) {
     if (switchSign === false) {
         btnMorpion.innerText = "X";
         switchSign = true;
         btnMorpion.disabled = true;
-        playerOne.push(idBtnMorpion);
+        playerOne.push(numberBtnMorpion); // je push dans un tableau des nombres de 1 à 9 selon le bouton où j appuie
+        console.log(playerOne)
     }else if ( switchSign === true){
         btnMorpion.innerText = "O"
         switchSign = false;
         btnMorpion.disabled = true;
-        playerTwo.push(idBtnMorpion);
+        playerTwo.push(numberBtnMorpion);
     }
-    
 }
 console.log(playerOne)
 
-function compareArray1(array1, array2, array3) {
-    for (let i = 0; i < array1.length; i++) {
-        let arrayOfarray = array1[i];
-        if (arrayOfarray.every(element => array2.includes(element))) {
-            setTimeout(() => {
-                alert("Joueur 1 gagne");
-            }, 300);
-            scoringPlayerOne ++;
-            scorePlayerOne.innerText = scoringPlayerOne
 
-        }else if (arrayOfarray.every(element => array3.includes(element))){
-            setTimeout(() => {
-                alert("Joueur 2 gagne");
-            }, 300);
+let playerWin = document.getElementById("player-win")
+const btnPlayerWin = document.getElementById("btn-player-win")
+
+function compareArray1(array1, array2, array3) {
+    let victory = false;
+    for (let i = 0; i < array1.length; i++) {
+        let arrayOfArray = array1[i];
+        if (arrayOfArray.every(element => array2.includes(element))) {
+                winBlock.style.display = "flex";
+                scoringPlayerOne ++;
+                scorePlayerOne.innerText = scoringPlayerOne;
+                playerWin.innerText = "Le joueur 1 gagne !!"
+                scorePlayerOne.innerText = scoringPlayerOne;
+                victory = true;
+
+        }else if (arrayOfArray.every(element => array3.includes(element))){
+            winBlock.style.display = "flex";
             scoringPlayerTwo ++;
             scorePlayerTwo.innerText = scoringPlayerTwo;
+            playerWin.innerText = "Le joueur 2 gagne !!"
+            victory = true;
         }
     }
+    if (victory === false && playerOne.length + playerTwo.length === equalityArray.length) {
+        winBlock.style.display = "flex";
+        playerWin.innerText = "Egalité !!"
+    }
+    btnPlayerWin.addEventListener("click", function() {
+        continueGame()
+    })
 }
+
+generateBtn();
+
+function continueGame() {
+    winBlock.style.display = "none";
+    morpionContainer.innerHTML = "";
+    victory = false;
+    equalityArray = [];
+    playerOne = [];
+    playerTwo = [];
+    generateBtn();
+}
+
+
+
+
+
+
+
+
 
 // function compareArray2(array1, array2) {
 //     for (let i = 0; i < array1.length; i++) {
@@ -77,12 +111,21 @@ function compareArray1(array1, array2, array3) {
 //     }
 // }
 
-function continueGame() {
-    playerOne = [];
-    playerTwo = [];
-    generateBtn();
-}
+// function getRandomInt(min, max) {
+//     min = Math.ceil(min);
+//     max = Math.floor(max);
+//     return Math.floor(Math.random() * (max - min)) + min;
+//   }
 
+// const vsComputer = document.getElementById("vs-computer");
+// vsComputer.addEventListener("click", function() {
+    
+//     for(let i = 0; i < equalityArray.length; i++) {
+//         let btnMorpion = getRandomInt(1, 9);
+//         equalityArray[i] = click(btnMorpion);
+//     }
+
+// })
 
 // function win(btnMorpion) {
 //     if (testArray !== "") {
